@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "cooking-aloud",
+  "private_key_id": "944b20d04f02b70c0ab2f0c8be33dde903bcae90",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCqDhWRsHVpHxgu\n88Sq2fbgHT/MZkqjPQZlKGh+wxPA9UpfkXB4TJ1H5cq0D5waudt7FLmvhaf7mnD6\nxx8REWL4fXwbFWJcK8DVOdR2h6XI83z3C8VPO9J4ehkmZ5DNueEYd0ZoJ/7TJBIS\ncp5RoSLFjb1wEBEZl46ftiYVZMYUDeKi9LFuow+Jf7RqKxMqLUPq6kfHBlaI26vd\n4cVvUrRpLW/b1p2/st7iIfZeZ91mk99D83CBTYHG/l9G1B9wp8z95n7C3mCd9+r3\nRslJWIVyLFudoph2Re99Vl3q3tnbfSF3pMyNqRu6W1hh1sGCOfvyMbARokwZj/Mq\nqz4xJgr7AgMBAAECggEABEUpmiichNDovOJsJtTQU90IKWwhewCLn5CohxOuSaMf\nL0/UoNYJAQbZKd+rzilVRJLxqAxVeoZB81olV+VgNIMvfEfzhK2olZzHzq4l+z95\n/NjJJ0Mw9suCGX/HmBLkfxvHoyfrSIatrtQ9UNQYrm3vutenG5sS/sRb0nUJsEkv\nysyfHZGMWi5lTOiz5dGYxS/YK4FT883yGhXnWn93sB5AKMteHO4FZ9D/Vp7xTGUC\njC8tO7FIick2YNsNEIzW3kQsnaLF9GzX6Dqev8hRp92p+5DLJyn1P/phX19lcW7d\nVTJ0NPSGP3l/5rOyykuQ6EaADDLnDlyHWiSLQq+QUQKBgQDi1xHaaDbGatycsU7S\nvWVUEKgGIqCuAft2DgevA6Ir1WU8uRYI6lPLTaxBPTTMMnYNeivLstJeNZzNvxtc\nSn7ub9DbIpKXgK9EPVnQ8d5RD0B52s0dcGg/GaJvSRvX4cvUZOo36FtHPT8jk/oS\ntGaYRsf2SC/8O3zrtf5oFhFikwKBgQC/6k++x65OqICjkzbemakzMR8LWWQ9K3lm\nSjmVwwnZEPcwBH3cSwF7Gr/IKtoz/yBRQ+/4/CKkJ0au0RRLvbCo+VzM4Q1dsfqP\nbs/U94m+i/3LevK3v/NMojEafIPhBe8YRt/ncZifcWD1C4avbV/774lo5ADRM1V/\ncZSBmdZu+QKBgQCoDsLxVwhN1FoB1PMa+qqZr4VsljcI8/sDKb3TkhOR+hV4+X8z\nt7fBBZi69MerCS+hKIRN8/wbRAkZ/Z4dsCt+J2VLFMAacoJnQjTKsocM8wnHvaz9\nRIxXQ3yuijGQrX6/qsxEA2eszdl7WGSLexAPfVEkS7MRYllYoIsNPlw+9QKBgDGV\nM+0yYdJornOUgUSZpqFXO5IPElrLdJ3850vODClMvNBnGK1lo4hOrOXmTGHKtGrK\nhqFpYvnOO/DGi9vVsmK1qkg0jON8LCQKmR+IpMnaGUQNC9B1g0J1VQJm0Ru+ELvQ\n8+Az9R6ciFRHGhEQzQ+mH3Y+Egf6n0hB7ABf4orhAoGAVD8qOpoVlq2Y6DIuVnyr\nucBlDdLJAScC/e889GTKK/a9rmNqgcvOga4cgdDQ3OyF/+7AoInTJg3V6qtCL5bB\nyvPISKlR9W8Q10QbPY6OsoSKKs8YccUCs92VSPtcwBQxKEQd3LkQDipdYzYg+Yzw\n961lx2eVZL5l3W90/ZwbjDE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "database-client@cooking-aloud.iam.gserviceaccount.com",
+  "client_id": "101838190518770730227",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/database-client%40cooking-aloud.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

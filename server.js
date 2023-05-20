@@ -1,6 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+require("dotenv").config();
+const mysql = require("promise-mysql");
+const query =
+  "CREATE TABLE `USERS` (`id` INT(20) NOT NULL, `email` VARCHAR(50), `password` VARCHAR(20), `favorite_meals` VARCHAR(10000), PRIMARY KEY (`id`));";
 
 app.use(cors());
 
@@ -67,6 +71,6 @@ app.get("/api/instruction/:rId", async (req, res) => {
 		console.error(error);
 		res.status(500).send("Internal Server Error");
 	}
-});
+
 
 app.listen(8080, () => console.log("Server started on port 5000"));
