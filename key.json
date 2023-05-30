@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "cooking-aloud",
+  "private_key_id": "df998bdb6ad4d68ff4d18a2ea097dc6c951daaa6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDDR7zsdGKdinMa\nndMKOZ4iB9FqS4ENOt0Bd0B1/9eUxq0rDOyhqcC4XuuU0KuN+tPtFHLF5eLll6EI\nkVSmzAtXQs9UptLgMgwd3pk6RsDVTaFkBgX9W1mCITNnD3OfVsfNwmqnzurXDO51\n3l0bJ46LqLA5ZLVmLFvOnQQYro49NSNfd7a8q5/Y3Fo2zeHBxeEPP4s9i9nkZass\n2tvQGFSOQHV5mWrcqU29GlG8UQa+bYWFytH5uuDuNV8WC4i6R5Up+NwsfQlTLW+x\nbFU7N4oB2kJuV1kQHuLR1m4N+BgLpKYt1/7fvkno4Pxa5++k+k0rYEh2r5V9kwRH\nudN93xXHAgMBAAECggEALsc5f17l3J00s3SJAFMLCVXcGV1a3aNzG43IeDvAFZh+\nFOj0qkkyrDe4sR5HaixipdEXKUbHUn4/CgFeSNJqCQ4tAjcwHpp+go03IVmfibkd\n5wr2VlmSmHSBjreJ1+p+1FA1IluTr84eNUf9/6o7IENZa3YvaflISLceKxdtZUWw\npunJ0Sdu4L3K9Jtn5ZgyhCQmy8wuC/ZmuuWtkAFIkNd+I8f3WmAbDIpGSlBxewsf\nEDyVgq55GmqnnYjwOi89MzC2wSVdePhKirhmkSK/HjkRSyG1/f8YnrcPpfXYPUw2\niXQQRv65JlbppW1OwBKtx2IPFMpCzLNGC/75OCRfOQKBgQD40NGr9N3sqPMV3J/g\nlO+lUbrPoE33N15OskuxXFhIosJioW49uubhlnHbKSG8VJqysPKfwuZJeKwXnQgE\nua8AhzwMYbBbWU882GJ9fFBb2roh+mq9Gb2qAMPbaSKFaTOax4Cc5lM4xmCDYAhV\nZzZk5YZrTEONbt7NTr6+PO2qRQKBgQDI6zLbAKlA+MAx98+1610Wq2QJ77zzSkiw\n8WV2QE4JX74T9xF5gdkIdQoYNuBehyp4gJwHPdOJA1w07ccJpo8I7betC3Q0jOTH\nORHo8Mvxn2KJK/IzT3InlWDv70AV2lFIGVjnVIICGVHzGIlFhXm2w7WXELu2il+S\nBnMpnnPmmwKBgAiCE3le0SvjhxRrS+hBD4TGq62n3KKkeQwV2rLA5p/tONpojL19\no6F5JIGLAYVQG04a8OD3qCpA/xl7nCeVNd+9wBboTECDaEs7VvrVgmXxr8Wzq2y1\n8Z9bkVbyXGTVeRdE1SgIVDYvymMTqJVLBzgiBRusKu8uKF464BjfOn1FAoGBAItN\nv4nmkHNSxPcgKWypjnZMSOU2ylwosfO0uzNc7H5FWqW/FOeZJuBdPa2CRthjgQfh\nq8y9ijAiG0k7X1gKmnuHTmV1XpGc6nZS1F8crVqOtqQCyz/WIoDdakORL263WsnR\ngTmK90T7Rz10UqDYJYaZdQsTeALdN9woCqrdiOBnAoGADCABiTxoe5jHmSSj0ZXg\n+sAlctfQoj+IxTBmmRXyD23deKbjiJqOLKTl3t+8PxgWrG4vRCHtDdw1Knl93mdE\nOMDOODZiEuR9W4XUMSRJq+b2Z1hBsuZgzfbITPzpZSthkH/IY5j7wRzQ9v+teW0L\nrLdYHV7YkfJZXs0LTjgQps8=\n-----END PRIVATE KEY-----\n",
+  "client_email": "my-text-to-speech-sa@cooking-aloud.iam.gserviceaccount.com",
+  "client_id": "110584646800526932829",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/my-text-to-speech-sa%40cooking-aloud.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

@@ -1,10 +1,44 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-require("dotenv").config();
-const mysql = require("promise-mysql");
-const query =
-  "CREATE TABLE `USERS` (`id` INT(20) NOT NULL, `email` VARCHAR(50), `password` VARCHAR(20), `favorite_meals` VARCHAR(10000), PRIMARY KEY (`id`));";
+
+var bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer();
+const jwt = require("jsonwebtoken");
+
+const dotenv = require('dotenv');
+dotenv.config();
+
+var mysql = require('mysql');
+let con = mysql.createConnection({
+    host: '34.159.230.184',
+    user: 'root',
+    password: 'cook123',
+    database: 'users'
+});
+
+con.connect(function(err) {
+	if (err) {
+		return console.error('error: ' + err.message);
+	}
+});
+
+app.use(express.urlencoded());
+
+app.set('view engine', 'pug');
+app.set('views', './views');
+
+// for parsing application/json
+app.use(bodyParser.json()); 
+
+// for parsing application/xwww-
+app.use(bodyParser.urlencoded({ extended: true })); 
+//form-urlencoded
+
+// for parsing multipart/form-data
+app.use(upload.array()); 
+app.use(express.static('public'));
 
 app.use(cors());
 
@@ -16,6 +50,15 @@ app.get("/api/users", (req, res) => {
 
 app.get("/api/admins", (req, res) => {
   res.json({ admins: ["Serhat", "Özgür"] });
+});
+
+app.get("/api/dtest", (req, res) => {
+	const query =
+	"CREATE TABLE `USERS` (`id` INT(20) NOT NULL AUTO_INCREMENT, `email` VARCHAR(50), `password` VARCHAR(20), `favorite_meals` VARCHAR(10000), PRIMARY KEY (`id`));";
+	con.query(query, function (err, result) {
+		if (err) throw err;
+		console.log("Result: " + result);
+	});
 });
 
 app.get("/api/recipe/:rId", async (req, res) => {
@@ -71,6 +114,196 @@ app.get("/api/instruction/:rId", async (req, res) => {
 		console.error(error);
 		res.status(500).send("Internal Server Error");
 	}
+});
+
+app.post('/api/register', (req, res) => {
+	let email = req.body.email;
+	let password = req.body.password;
+	const query =
+	"SELECT * FROM USERS WHERE email = '" + email + "'";
+	con.query(query, function (err, result) {
+		if (err) throw err;
+		if (result[0] == null){
+			const query2 =
+			"INSERT INTO USERS (email, password, favorite_meals) VALUES ('" + email + "', '" + password + "', '');";
+			con.query(query2, function (err, result2) {
+				if (err) throw err;
+				let token;
+				try {
+					token = jwt.sign(
+					{ userId: result2.insertId, userEmail: email },
+					process.env.TOKEN_SECRET,
+					{ expiresIn: "1h" }
+					);
+				} catch (err) {
+					const error = new Error("Error! Something went wrong.");
+					return next(error);
+				}
+				res.status(200).json({
+					success: true,
+					data: {userId: result2.insertId, userEmail: email, token: token },
+				});
+			});
+		}
+		else{
+			res.status(200).json({
+				success: false,
+				data: {message: "This email is already registered!"}
+			});
+		}
+	});	
+	
+	//res.send(`Email: ${email} Password: ${password}`);
+});
+
+app.post('/api/login', (req, res) => {
+	let email = req.body.email;
+	let password = req.body.password;
+	const query =
+	"SELECT * FROM USERS WHERE email = '" + email + "' AND password = '" + password + "'";
+	con.query(query, function (err, result) {
+		if (err) throw err;
+		if (result[0] != null){
+			let token;
+			try {
+				//Creating jwt token
+				token = jwt.sign(
+				  { userId: result[0].id, userEmail: result[0].email },
+				  process.env.TOKEN_SECRET,
+				  { expiresIn: "1h" }
+				);
+			} catch (err) {
+				console.log(err);
+				const error = new Error("Error! Something went wrong.");
+				return next(error);
+			}
+ 
+			res.status(200).json({
+				  success: true,
+				  data: {userId: result[0].id, userEmail: result[0].email, token: token},
+			});
+		}
+		else{
+			res.status(200).json({
+				success: false,
+				data: {message: "Email or password is incorrect!"}
+			});
+		}
+	});	
+	
+	//res.send(`Email: ${email} Password: ${password}`);
+});
+
+app.post('/api/addfavorite', (req, res) => {
+	let newFavorite = req.body.mealid;
+	const token = req.headers.authorization.split(' ')[1]; 
+    if(!token){
+        res.status(200).json({success:false, message: "Error! Token was not provided."});
+    }
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET );
+	var email = decodedToken.userEmail;
+	//res.status(200).json({success:true, data:{userId:decodedToken.userId, userEmail:decodedToken.userEmail}});   
+	const query = "SELECT * FROM USERS WHERE email = '" + email + "'";
+	con.query(query, function (err, result) {
+		if (err) throw err;
+		if (result[0] != null){
+			var favoriteMeals = result[0].favorite_meals;
+			if (favoriteMeals == ""){
+				favoriteMeals = newFavorite;
+			}
+			else{
+				favoriteMeals = favoriteMeals + "/" + newFavorite;
+			}
+			const query2 = "UPDATE USERS SET favorite_meals = '" + favoriteMeals + "' WHERE email = '" + email + "'";
+			con.query(query2, function (err, result2) {
+				if (err) throw err;
+				res.status(200).json({
+				  success: true,
+				  data: {message: "Favorite meal added successfully!"}
+				});
+			});
+		}
+		else{
+			res.status(200).json({
+				success: false,
+				data: {message: "User not found!"}
+			});
+		}
+	});
+	
+	//res.send(`Email: ${email} Password: ${password}`);
+});
+
+app.post('/api/removefavorite', (req, res) => {
+	let remFavorite = req.body.mealid;
+	const token = req.headers.authorization.split(' ')[1]; 
+    if(!token){
+        res.status(200).json({success:false, message: "Error! Token was not provided."});
+    }
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET );
+	var email = decodedToken.userEmail;
+	//res.status(200).json({success:true, data:{userId:decodedToken.userId, userEmail:decodedToken.userEmail}});   
+	const query = "SELECT * FROM USERS WHERE email = '" + email + "'";
+	con.query(query, function (err, result) {
+		if (err) throw err;
+		if (result[0] != null){
+			var favoriteMeals = result[0].favorite_meals;
+			const mealList = favoriteMeals.split("/");
+			if (mealList.includes(remFavorite)){
+				
+			}
+			const query2 = "UPDATE USERS SET favorite_meals = '" + favoriteMeals + "' WHERE email = '" + email + "'";
+			con.query(query2, function (err, result2) {
+				if (err) throw err;
+				res.status(200).json({
+				  success: true,
+				  data: {message: "Favorite meal added successfully!"}
+				});
+			});
+		}
+		else{
+			res.status(200).json({
+				success: false,
+				data: {message: "User not found!"}
+			});
+		}
+	});
+	
+	//res.send(`Email: ${email} Password: ${password}`);
+});
+
+app.get('/api/getfavorite', (req, res) => {
+	const token = req.headers.authorization.split(' ')[1]; 
+	console.log(req.headers);
+    if(!token){
+        res.status(200).json({success:false, message: "Error! Token was not provided."});
+    }
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET );
+	var email = decodedToken.userEmail;
+	//res.status(200).json({success:true, data:{userId:decodedToken.userId, userEmail:decodedToken.userEmail}});   
+	const query = "SELECT * FROM USERS WHERE email = '" + email + "'";
+	con.query(query, function (err, result) {
+		if (err) throw err;
+		if (result[0] != null){
+			var favoriteMeals = result[0].favorite_meals;
+			const mealList = favoriteMeals.split("/");
+			res.status(200).json({
+				success: true,
+				data: {favmeals: mealList}
+			});
+				
+		}
+		else{
+			res.status(200).json({
+				success: false,
+				data: {message: "User not found!"}
+			});
+		}
+	});
+	
+	//res.send(`Email: ${email} Password: ${password}`);
+});
+	
 
 
 app.listen(8080, () => console.log("Server started on port 5000"));
