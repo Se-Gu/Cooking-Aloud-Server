@@ -43,7 +43,8 @@ app.use(express.static('public'));
 
 app.use(cors());
 
-const apiKey = "86b00266fbc34fd8be501c09567ae835";
+//const apiKey = "86b00266fbc34fd8be501c09567ae835";
+const apiKey = "ae57b431a7cc442896700a6df2419da4";
 
 app.get("/api/users", (req, res) => {
   res.json({ users: ["userOne", "userTwo", "userThree"] });
@@ -196,7 +197,9 @@ app.post('/api/login', (req, res) => {
 });
 
 app.post('/api/addfavorite', (req, res) => {
-	let newFavorite = req.body.mealid;
+	let newId = req.body.mealid;
+	let newTitle = req.body.mealtitle;
+	let newFavorite = newId + "-" + newTitle;
 	const token = req.headers.authorization.split(' ')[1]; 
     if(!token){
         res.status(200).json({success:false, message: "Error! Token was not provided."});
@@ -250,20 +253,26 @@ app.post('/api/removefavorite', (req, res) => {
 		if (result[0] != null){
 			var favoriteMeals = result[0].favorite_meals;
 			const mealList = favoriteMeals.split("/");
-			let newFavorites = "";
-			if (mealList.includes(remFavorite)){
-				for(let i = 0; i < mealList.length; i++){
-					if (mealList[i] != remFavorite){
-						if (i == mealList.length - 1)
-							newFavorites = newFavorites + mealList[i];
-						else
-							newFavorites = newFavorites + mealList[i] + "/";
-					}
-					
-
+			let includes = false;
+			for(let i = 0; i < mealList.length; i++){
+				const mealData = mealList[i].split("-");
+				if (mealData[0] == remFavorite){
+					includes = true;
 				}
 			}
-			const query2 = "UPDATE USERS SET favorite_meals = '" + favoriteMeals + "' WHERE email = '" + email + "'";
+			let newFavorites = "";
+			if (includes){
+				
+				for(let i = 0; i < mealList.length; i++){
+					const mealData = mealList[i].split("-");
+					if (mealData[0] != remFavorite){
+						newFavorites = newFavorites + mealList[i] + "/";
+					}
+				}
+				if (newFavorites != "")
+					newFavorites = newFavorites.slice(0, -1)
+			}
+			const query2 = "UPDATE USERS SET favorite_meals = '" + newFavorites + "' WHERE email = '" + email + "'";
 			con.query(query2, function (err, result2) {
 				if (err) throw err;
 				res.status(200).json({
@@ -298,9 +307,14 @@ app.get('/api/getfavorite', (req, res) => {
 		if (result[0] != null){
 			var favoriteMeals = result[0].favorite_meals;
 			const mealList = favoriteMeals.split("/");
+			let parsedMeals = [];
+			for (let i = 0; i < mealList.length; i++){
+				const mealData = mealList[i].split("-");
+				parsedMeals.push({mealid: mealData[0], mealtitle: mealData[1]})
+			}
 			res.status(200).json({
 				success: true,
-				data: {favmeals: mealList}
+				data: {favmeals: parsedMeals}
 			});
 				
 		}
@@ -320,7 +334,7 @@ app.post('/api/checkfavorite', (req, res) => {
 	const token = req.headers.authorization.split(' ')[1]; 
     if(!token){
         res.status(200).json({success:false, message: "Error! Token was not provided."});
-    }
+    } 
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET );
 	var email = decodedToken.userEmail;
 	//res.status(200).json({success:true, data:{userId:decodedToken.userId, userEmail:decodedToken.userEmail}});   
@@ -329,12 +343,27 @@ app.post('/api/checkfavorite', (req, res) => {
 		if (err) throw err;
 		if (result[0] != null){
 			var favoriteMeals = result[0].favorite_meals;
-			const mealList = favoriteMeals.split("/");
-			if (mealList.includes(checkfavorite)){
-				res.status(200).json({
-					success: true,
-					data: {exists: true}
-				});
+			if (favoriteMeals != ""){
+				const mealList = favoriteMeals.split("/");
+				let includes = false;
+				for(let i = 0; i < mealList.length; i++){
+					const mealData = mealList[i].split("-");
+					if (mealData[0] == checkfavorite){
+						includes = true;
+					}
+				}
+				if (includes){
+					res.status(200).json({
+						success: true,
+						data: {exists: true}
+					});
+				}
+				else{
+					res.status(200).json({
+						success: true,
+						data: {exists: false}
+					});
+				}
 			}
 			else{
 				res.status(200).json({
@@ -342,6 +371,7 @@ app.post('/api/checkfavorite', (req, res) => {
 					data: {exists: false}
 				});
 			}
+			
 		}
 		else{
 			res.status(200).json({
