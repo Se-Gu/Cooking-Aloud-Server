@@ -10,12 +10,13 @@ const jwt = require("jsonwebtoken");
 const dotenv = require('dotenv');
 dotenv.config();
 
-var mysql = require('mysql');
+var mysql = require('mysql2');
 let con = mysql.createConnection({
-    host: '34.159.230.184',
-    user: 'root',
-    password: 'cook123',
-    database: 'users'
+    host: 'db-mysql-fra1-20737-do-user-12533753-0.b.db.ondigitalocean.com',
+    user: 'doadmin',
+	port: 25060,
+    password: 'AVNS_TyP_aTfi4c5egU12ZLl',
+    database: 'cookingaloud'
 });
 
 con.connect(function(err) {
