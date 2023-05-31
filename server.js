@@ -250,15 +250,25 @@ app.post('/api/removefavorite', (req, res) => {
 		if (result[0] != null){
 			var favoriteMeals = result[0].favorite_meals;
 			const mealList = favoriteMeals.split("/");
+			let newFavorites = "";
 			if (mealList.includes(remFavorite)){
-				
+				for(let i = 0; i < mealList.length; i++){
+					if (mealList[i] != remFavorite){
+						if (i == mealList.length - 1)
+							newFavorites = newFavorites + mealList[i];
+						else
+							newFavorites = newFavorites + mealList[i] + "/";
+					}
+					
+
+				}
 			}
 			const query2 = "UPDATE USERS SET favorite_meals = '" + favoriteMeals + "' WHERE email = '" + email + "'";
 			con.query(query2, function (err, result2) {
 				if (err) throw err;
 				res.status(200).json({
 				  success: true,
-				  data: {message: "Favorite meal added successfully!"}
+				  data: {message: "Favorite meal removed successfully!"}
 				});
 			});
 		}
@@ -293,6 +303,45 @@ app.get('/api/getfavorite', (req, res) => {
 				data: {favmeals: mealList}
 			});
 				
+		}
+		else{
+			res.status(200).json({
+				success: false,
+				data: {message: "User not found!"}
+			});
+		}
+	});
+	
+	//res.send(`Email: ${email} Password: ${password}`);
+});
+
+app.post('/api/checkfavorite', (req, res) => {
+	let checkfavorite = req.body.mealid;
+	const token = req.headers.authorization.split(' ')[1]; 
+    if(!token){
+        res.status(200).json({success:false, message: "Error! Token was not provided."});
+    }
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET );
+	var email = decodedToken.userEmail;
+	//res.status(200).json({success:true, data:{userId:decodedToken.userId, userEmail:decodedToken.userEmail}});   
+	const query = "SELECT * FROM USERS WHERE email = '" + email + "'";
+	con.query(query, function (err, result) {
+		if (err) throw err;
+		if (result[0] != null){
+			var favoriteMeals = result[0].favorite_meals;
+			const mealList = favoriteMeals.split("/");
+			if (mealList.includes(checkfavorite)){
+				res.status(200).json({
+					success: true,
+					data: {exists: true}
+				});
+			}
+			else{
+				res.status(200).json({
+					success: true,
+					data: {exists: false}
+				});
+			}
 		}
 		else{
 			res.status(200).json({
